@@ -37,26 +37,6 @@ class InCallManager {
         _InCallManager.turnScreenOn();
     }
 
-    async getIsWiredHeadsetPluggedIn() {
-        if (Platform.OS === 'ios') {
-            return await _InCallManager.getIsWiredHeadsetPluggedIn();
-        } else {
-            console.log("Android doesn't support getIsWiredHeadsetPluggedIn() yet.");
-            return null;
-        }
-    }
-
-    setFlashOn(enable, brightness) {
-        if (Platform.OS === 'ios') {
-            enable = (enable === true) ? true : false;
-            brightness = (typeof brightness === 'number') ? brightness : 0;
-            _InCallManager.setFlashOn(enable, brightness);
-        } else {
-            console.log("Android doesn't support setFlashOn(enable, brightness)");
-        }
-    }
-
-
     setKeepScreenOn(enable) {
         enable = (enable === true) ? true : false;
         _InCallManager.setKeepScreenOn(enable);
@@ -77,16 +57,13 @@ class InCallManager {
         _InCallManager.setMicrophoneMute(enable);
     }
 
-    startRingtone(ringtone, vibrate_pattern, ios_category, seconds) {
+    startRingtone(ringtone, vibrate_pattern, seconds) {
         ringtone = (typeof ringtone === 'string') ? ringtone : "_DEFAULT_";
         this.vibrate = (Array.isArray(vibrate_pattern)) ? true : false;
-        ios_category = (ios_category === 'playback') ? 'playback' : "default";
         seconds = (typeof seconds === 'number' && seconds > 0) ? parseInt(seconds) : -1; // --- android only, default looping
 
         if (Platform.OS === 'android') {
             _InCallManager.startRingtone(ringtone, seconds);
-        } else {
-            _InCallManager.startRingtone(ringtone, ios_category);
         }
 
         // --- should not use repeat, it may cause infinite loop in some cases.
@@ -105,7 +82,7 @@ class InCallManager {
     startProximitySensor() {
         _InCallManager.startProximitySensor();
     }
-  
+
     stopProximitySensor() {
         _InCallManager.stopProximitySensor();
     }
